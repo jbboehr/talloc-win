@@ -1,0 +1,41 @@
+version: '{branch}.{build}'
+branches:
+  only:
+  - master
+  - appveyor
+  - w32
+
+image:
+#- Visual Studio 2015
+- Visual Studio 2017
+
+platform:
+- x86
+- x64
+
+install:
+- cmd: cinst wget
+- IF "%PLATFORM%"=="x86" (call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat") ELSE (ECHO "probably a 64bit build")
+- IF "%PLATFORM%"=="x64" (call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat") ELSE (ECHO "probably a 32bit build")
+
+build_script:
+- cmd: >-
+    cd C:\projects\talloc-win
+    
+    mkdir build
+    
+    cd build
+    
+    cmake -G "NMake Makefiles" -D CMAKE_INSTALL_PREFIX=../output ..
+    
+    nmake
+    
+    nmake install
+
+test_script:
+- cmd: nmake test
+
+artifacts:
+  - path: output
+    name: master
+    type: zip
