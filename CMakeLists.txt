@@ -14,8 +14,9 @@ set(SOURCE_FILES
 add_library(talloc ${SOURCE_FILES})
 target_link_libraries(talloc winmm.lib)
 
-install(TARGETS talloc DESTINATION lib)
+install(TARGETS talloc DESTINATION lib EXPORT talloc)
 install(FILES talloc.h DESTINATION include)
+install(EXPORT talloc DESTINATION cmake)
 
 enable_testing()
 
@@ -23,3 +24,4 @@ add_executable(testsuite testsuite.c testsuite_main.c talloc.h)
 target_link_libraries(testsuite talloc)
 
 add_test(NAME testsuite COMMAND testsuite)
+
