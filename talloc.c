@@ -30,8 +30,18 @@
   inspired by http://swapped.cc/halloc/
 */
 
-#include "replace.h"
+#include <string.h>
+#include <BaseTsd.h>
+#include <windows.h>
+
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
+//#include "replace.h"
 #include "talloc.h"
+
+#define _PUBLIC_ TALLOC_API
+#define ssize_t SSIZE_T
 
 #ifdef HAVE_SYS_AUXV_H
 #include <sys/auxv.h>
@@ -57,7 +67,6 @@
 /* use this to force every realloc to change the pointer, to stress test
    code that might not cope */
 #define ALWAYS_REALLOC 0
-
 
 #define MAX_TALLOC_SIZE 0x10000000
 
@@ -380,7 +389,7 @@ void talloc_lib_init(void)
 	talloc_magic = random_value & ~TALLOC_FLAG_MASK;
 }
 #else
-#warning "No __attribute__((constructor)) support found on this platform, additional talloc security measures not available"
+//#warning "No __attribute__((constructor)) support found on this platform, additional talloc security measures not available"
 #endif
 
 static void talloc_log(const char *fmt, ...) PRINTF_ATTRIBUTE(1,2);
