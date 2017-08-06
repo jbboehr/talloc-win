@@ -15,7 +15,12 @@ add_library(talloc SHARED ${SOURCE_FILES})
 add_library(talloc_static STATIC ${SOURCE_FILES})
 target_link_libraries(talloc winmm.lib)
 
-install(TARGETS talloc talloc_static DESTINATION lib EXPORT talloc)
+install(TARGETS talloc talloc_static
+    EXPORT talloc
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+
 install(FILES talloc.h DESTINATION include)
 install(EXPORT talloc DESTINATION cmake)
 
