@@ -11,10 +11,11 @@ set(SOURCE_FILES
         talloc.c
         talloc.h)
 
-add_library(talloc ${SOURCE_FILES})
+add_library(talloc SHARED ${SOURCE_FILES})
+add_library(talloc_static STATIC ${SOURCE_FILES})
 target_link_libraries(talloc winmm.lib)
 
-install(TARGETS talloc DESTINATION lib EXPORT talloc)
+install(TARGETS talloc talloc_static DESTINATION lib EXPORT talloc)
 install(FILES talloc.h DESTINATION include)
 install(EXPORT talloc DESTINATION cmake)
 
