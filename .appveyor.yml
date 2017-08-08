@@ -11,8 +11,6 @@ platform:
 
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      VS: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       VS: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
