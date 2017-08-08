@@ -13,8 +13,10 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       VS: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
+      VC_VER: 14
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       VS: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
+      VC_VER: 15
 
 install:
 - if defined VS call "%VS%" %PLATFORM%
@@ -40,3 +42,19 @@ artifacts:
   - path: output
     name: master
     type: zip
+
+before_deploy:
+- cmd: >-
+    cd C:\projects\talloc-win\output
+    7za a -tzip ..\talloc-win32-vc%VC_VER%-%PLATFORM%.zip *
+
+deploy:
+  release: v$(appveyor_build_version)
+  provider: GitHub
+  auth_token:
+    secure: NQiM5RlWDUZ/u8KR/z3WicaLR8JUiDl9fTWDUDiY7kvtCgQQDD5+qQEcNBMtGAJV
+  artifact: /talloc-win32-vc.*\.zip/
+  draft: false
+  prerelease: false
+  on:
+    appveyor_repo_tag: true
