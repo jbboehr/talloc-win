@@ -5,18 +5,21 @@ branches:
   - appveyor
   - w32
 
-image:
-#- Visual Studio 2015
-- Visual Studio 2017
-
 platform:
 - x86
 - x64
 
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      VS: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VS: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      VS: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
+
 install:
-- cmd: cinst wget
-- IF "%PLATFORM%"=="x86" (call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat") ELSE (ECHO "probably a 64bit build")
-- IF "%PLATFORM%"=="x64" (call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat") ELSE (ECHO "probably a 32bit build")
+- if defined VS call "%VS%" %PLATFORM%
 
 build_script:
 - cmd: >-
